@@ -26,13 +26,13 @@ task :collect_attendance_reports => :environment do
 
 					lines.each do |line|
 
-						if line =~ /^ *(Partido .*)$/
+						if line =~ /^ *(Partido (([^ ]+ )*[^ ]+))$/
 							party = $1
 						end
 
-						if party and line =~ /^\s*\d+ (\D+)  +(\D+)$/
+						if party and line =~ /^\s*\d+\s+(([^ ]+ )*[^ ]+) +(([^ ]+ )*[^ ]+)\s*$/
               name = $1
-							attendance_status = $2
+							attendance_status = $3
 
               unless Congressman.find_by_name(name)
                 Congressman.create(:name => name, :party => party, :start_date => currDate)
@@ -58,14 +58,14 @@ task :collect_attendance_reports => :environment do
           lastSession.save
         end
 
-				puts "Processed report for session on " + currDate.strftime("%Y-%m-%d")
+				puts DateTime.now.to_s + " -- Processed report for session on " + currDate.strftime("%Y-%m-%d")
 				currDate += 1
 
 			rescue => e
 				case e
 				when OpenURI::HTTPError
 					# report did not exist move on to the next
-					puts "Could not fetch report for session on " + currDate.strftime("%Y-%m-%d")
+					puts DateTime.now.to_s + " -- Could not fetch report for session on " + currDate.strftime("%Y-%m-%d")
 					currDate += 1
 				else
 					raise e
@@ -95,13 +95,13 @@ task :collect_attendance_reports => :environment do
 
           lines.each do |line|
 
-            if line =~ /^ *(Partido .*)$/
+            if line =~ /^ *(Partido (([^ ]+ )*[^ ]+))$/
               party = $1
             end
 
-            if party and line =~ /^\s*\d+ (\D+)  +(\D+)$/
+            if party and line =~ /^\s*\d+\s+(([^ ]+ )*[^ ]+) +(([^ ]+ )*[^ ]+)\s*$/
               name = $1
-              attendance_status = $2
+              attendance_status = $3
 
               unless Congressman.find_by_name(name)
                 Congressman.create(:name => name, :party => party, :start_date => currDate)
@@ -127,14 +127,14 @@ task :collect_attendance_reports => :environment do
           lastSession.save
         end
 
-        puts "Processed report for session on " + currDate.strftime("%Y-%m-%d")
+        puts DateTime.now.to_s + " -- Processed report for session on " + currDate.strftime("%Y-%m-%d")
         currDate += 1
 
       rescue => e
         case e
           when OpenURI::HTTPError
             # report did not exist move on to the next
-            puts "Could not fetch report for session on " + currDate.strftime("%Y-%m-%d")
+            puts DateTime.now.to_s + " -- Could not fetch report for session on " + currDate.strftime("%Y-%m-%d")
             currDate += 1
           else
             raise e
@@ -144,7 +144,7 @@ task :collect_attendance_reports => :environment do
     end
 
 	else
-		puts "ERROR: LastSession table has more than one entry"
+		puts DateTime.now.to_s + " -- ERROR: LastSession table has more than one entry"
 	end
 
 end

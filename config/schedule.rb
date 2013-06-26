@@ -21,6 +21,6 @@
 set :output, "#{path}/log/cron.log"
 set :environment, "development"
 
-every 1.day, :at => '9:00 am' do
+every 1.day, :at => '1:23 pm' do
   rake "collect_attendance_reports"
 end
