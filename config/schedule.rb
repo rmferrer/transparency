@@ -18,7 +18,9 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+set :output, "#{path}/log/cron.log"
+set :environment, "development"
 
-every 1.day, :at => '4:30 am' do
-  runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
+every 1.day, :at => '9:00 am' do
+  rake "collect_attendance_reports"
 end

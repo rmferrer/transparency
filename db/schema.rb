@@ -11,10 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130621173828) do
+ActiveRecord::Schema.define(:version => 20130626052519) do
 
   create_table "attendances", :force => true do |t|
-    t.string "status"
+    t.string  "status"
+    t.integer "congressman_id"
+    t.integer "congress_session_id"
   end
 
   create_table "congress_sessions", :force => true do |t|
@@ -26,6 +28,10 @@ ActiveRecord::Schema.define(:version => 20130621173828) do
     t.string "name"
     t.string "party"
     t.date   "start_date"
+  end
+
+  create_table "last_sessions", :force => true do |t|
+    t.date "date"
   end
 
 end
